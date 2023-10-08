@@ -1,16 +1,24 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+import socket
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+host = '127.0.0.1'
+port = 50001
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server_socket.bind((host, port))
+server_socket.listen()
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+
+conn, addr = server_socket.accept()
+print("Connected from: " + str(addr))
+
+
+while True:
+    data = conn.recv(1024).decode()
+    print(data)
+    response_data = "Message Received"
+    conn.send(response_data.encode())
+
+
+conn.close()
